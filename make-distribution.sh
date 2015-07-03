@@ -28,7 +28,7 @@ set -o pipefail
 set -e
 set -x
 
-# Figure out where the Spark framework is installed
+# Figure out where the Spark framework is placed
 SPARK_HOME="$(cd "`dirname "$0"`"; pwd)"
 DISTDIR="$SPARK_HOME/dist"
 
@@ -40,6 +40,7 @@ TACHYON_URL="https://github.com/amplab/tachyon/releases/download/v${TACHYON_VERS
 MAKE_TGZ=false
 NAME=none
 MVN="$SPARK_HOME/build/mvn"
+MAKE_LOG="$SPARK_HOME/make_out.log"
 
 function exit_with_usage {
   echo "make-distribution.sh - tool for making binary distributions of Spark"
@@ -158,7 +159,7 @@ if [[ ! "$JAVA_VERSION" =~ "1.6" && -z "$SKIP_JAVA_TEST" ]]; then
 fi
 
 if [ "$NAME" == "none" ]; then
-  NAME=$SPARK_HADOOP_VERSION
+  NAME=${SPARK_HADOOP_VERSION}
 fi
 
 echo "Spark version is $VERSION"
@@ -178,7 +179,7 @@ fi
 # Build uber fat JAR
 cd "$SPARK_HOME"
 
-export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"
+export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512m -XX:ReservedCodeCacheSize=512m"
 
 # Store the command as an array because $MVN variable might have spaces in it.
 # Normal quoting tricks don't work.
@@ -189,7 +190,16 @@ BUILD_COMMAND=("$MVN" clean package -DskipTests $@)
 echo -e "\nBuilding with..."
 echo -e "\$ ${BUILD_COMMAND[@]}\n"
 
-"${BUILD_COMMAND[@]}"
+# Enanched command execution
+"${BUILD_COMMAND[@]}"  | tee "$MAKE_LOG"
+if [ -e "$MAKE_LOG" ]
+then
+  if grep -Fq "[ERROR] " "$MAKE_LOG"
+  then
+    echo "Compilation error. See $MAKE_LOG for more details"
+    exit 1
+  fi
+fi
 
 # Make directories
 rm -rf "$DISTDIR"
@@ -237,6 +247,11 @@ if [ -d "$SPARK_HOME"/R/lib/SparkR ]; then
   cp -r "$SPARK_HOME/R/lib/SparkR" "$DISTDIR"/R/lib
 fi
 
+# Copy Openstack Support
+cp "$SPARK_HOME/swift/target/hadoop-openstack-2.6.0.jar" "$DISTDIR/lib"
+rm "$SPARK_HOME"/../conf/*~
+cp "$SPARK_HOME"/../conf/* "$DISTDIR"/conf
+
 # Download and copy in tachyon, if requested
 if [ "$SPARK_TACHYON" == "true" ]; then
   TMPD=`mktemp -d 2>/dev/null || mktemp -d -t 'disttmp'`
@@ -272,10 +287,14 @@ if [ "$SPARK_TACHYON" == "true" ]; then
 fi
 
 if [ "$MAKE_TGZ" == "true" ]; then
-  TARDIR_NAME=spark-$VERSION-bin-$NAME
+  TARDIR_NAME=spark-${VERSION}-bin-${NAME}
   TARDIR="$SPARK_HOME/$TARDIR_NAME"
   rm -rf "$TARDIR"
   cp -r "$DISTDIR" "$TARDIR"
   tar czf "spark-$VERSION-bin-$NAME.tgz" -C "$SPARK_HOME" "$TARDIR_NAME"
   rm -rf "$TARDIR"
 fi
+
+echo "[INFO] ------------------------------------------------------------------------"
+echo "[INFO] Make Distribution finalized"
+echo "[INFO] ------------------------------------------------------------------------"

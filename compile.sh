@@ -1,17 +1,20 @@
 #!/bin/bash
-echo 'Compile and build Spark'
 
-build/mvn -DskipTests clean package | tee make_out.log
-#build/mvn -Pyarn -Phadoop-2.6 -Dhadoop.version=2.6.0 -DskipTests clean package | tee make_out.log
+# Usage:
+# ./compile
+#			make all modules and packaging all project to spark-2.6.0-bin-spark-swift.tgz
+# ./compile <any words>
+#			make only swift module and packaging all project to spark-2.6.0-bin-spark-swift.tgz
+#
+#
+# To build more modules, add a comma separated list of module names behind the -pl argument
+# Add custom parameters to mvn at the end
+# Recap:			./make-distribution.sh --name <build-name> --tgz <mvn arguments>
+#							<mvn arguments>			-Phadoop-2.6 -Pyarn -pl swift,core,graphx
 
-if grep -Fq "[ERROR] " make_out.log
+if [ $# -ne 0 ]
 then
-	echo "Compilation error. See make_out.log for more details"
+	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6 -pl swift
 else
-	./make-distribution.sh --name custom-spark --tgz
-#	./make-distribution.sh --name custom-spark --tgz -Phadoop-2.6 -Pyarn
-	echo 'Completed compilation'
+	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6
 fi
-
-
-
