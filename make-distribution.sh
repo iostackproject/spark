@@ -249,7 +249,6 @@ fi
 
 # Copy Openstack Support
 cp "$SPARK_HOME/swift/target/hadoop-openstack-2.6.0.jar" "$DISTDIR/lib"
-rm "$SPARK_HOME"/../conf/*~
 cp "$SPARK_HOME"/../conf/* "$DISTDIR"/conf
 
 # Download and copy in tachyon, if requested

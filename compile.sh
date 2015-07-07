@@ -14,7 +14,7 @@
 
 if [ $# -ne 0 ]
 then
-	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6 -pl swift
+	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6 -pl examples
 else
 	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6
 fi
