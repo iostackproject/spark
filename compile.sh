@@ -16,5 +16,13 @@ if [ $# -ne 0 ]
 then
 	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6 -pl examples
 else
+	while true; do
+	    read -p "Do you wish to compile all modules of Spark?" yn
+	    case $yn in
+	        [Yy]* ) make install; break;;
+	        [Nn]* ) exit;;
+	        * ) echo "Please answer yes or no.";;
+	    esac
+	done
 	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6
 fi
