@@ -67,6 +67,7 @@ class CheckpointRDD[T: ClassTag](sc: SparkContext, val checkpointPath: String)
     val status = fs.getFileStatus(new Path(checkpointPath,
       CheckpointRDD.splitIdToFile(split.index)))
     val locations = fs.getFileBlockLocations(status, 0, status.getLen)
+    logInfo("ENTRECOT CheckpointRDD.getPreferredLocations status = " +status+" locations = "+locations)      // TODO TODO log
     locations.headOption.toList.flatMap(_.getHosts).filter(_ != "localhost")
   }
 

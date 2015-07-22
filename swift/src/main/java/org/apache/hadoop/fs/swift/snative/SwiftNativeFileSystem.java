@@ -84,7 +84,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @return the inner store class
    */
   public SwiftNativeFileSystemStore getStore() {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getStore "+store);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getStore "+store);      // TODO TODO log
     return store;
   }
 
@@ -117,7 +117,7 @@ public class SwiftNativeFileSystem extends FileSystem {
               + " and working dir " + workingDir);
     }
     store.initialize(uri, conf);
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.initialize " + fsuri + " username = " + System.getProperty("user.name") + " workingDir = "+workingDir);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.initialize " + fsuri + " username = " + System.getProperty("user.name") + " workingDir = "+workingDir);      // TODO TODO log
     LOG.debug("SwiftFileSystem initialized with uri "+uri);
   }
 
@@ -126,7 +126,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public URI getUri() {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getUri "+uri);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getUri "+uri);      // TODO TODO log
     return uri;
   }
 
@@ -142,7 +142,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public Path getWorkingDirectory() {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getWorkingDirectory "+workingDir);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getWorkingDirectory "+workingDir);      // TODO TODO log
     return workingDir;
   }
 
@@ -151,7 +151,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public void setWorkingDirectory(Path dir) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.setWorkingDirectory "+dir);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.setWorkingDirectory "+dir);      // TODO TODO log
     workingDir = makeAbsolute(dir);
     if (LOG.isDebugEnabled()) {
       LOG.debug("SwiftFileSystem.setWorkingDirectory to " + dir);
@@ -166,7 +166,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public FileStatus getFileStatus(Path path) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getFileStatus path = "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getFileStatus path = "+path);      // TODO TODO log
     Path absolutePath = makeAbsolute(path);
     return store.getObjectMetadata(absolutePath);
   }
@@ -179,7 +179,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public long getDefaultBlockSize() {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getDefaultBlockSize deprecated");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getDefaultBlockSize deprecated");      // TODO TODO log
     return store.getBlocksize();
   }
 
@@ -191,18 +191,19 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public long getDefaultBlockSize(Path f) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getDefaultBlockSize "+store.getBlocksize());      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getDefaultBlockSize "+store.getBlocksize());      // TODO TODO log
     return store.getBlocksize();
   }
 
   @Override
   public long getBlockSize(Path path) throws IOException {
+    LOG.info("VINAGRE SwiftNativeFileSystem.getBlockSize path="+path);      // TODO TODO log
     return store.getBlocksize();
   }
 
   @Override
   public boolean isFile(Path f) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.isFile "+f);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.isFile path="+f);      // TODO TODO log
     try {
       FileStatus fileStatus = getFileStatus(f);
       return !SwiftUtils.isDirectory(fileStatus);
@@ -213,7 +214,7 @@ public class SwiftNativeFileSystem extends FileSystem {
 
   @Override
   public boolean isDirectory(Path f) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.isDirectory "+f);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.isDirectory path="+f);      // TODO TODO log
     try {
       FileStatus fileStatus = getFileStatus(f);
       return SwiftUtils.isDirectory(fileStatus);
@@ -236,7 +237,7 @@ public class SwiftNativeFileSystem extends FileSystem {
   public BlockLocation[] getFileBlockLocations(FileStatus file,
                                                long start,
                                                long len) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getFileBlockLocations ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getFileBlockLocations fileStatus="+file+" start="+start+" len="+len);      // TODO TODO log
 
     //argument checks
     if (file == null) {
@@ -286,9 +287,9 @@ public class SwiftNativeFileSystem extends FileSystem {
     final String[] names = new String[locations.size()];
     final String[] hosts = new String[locations.size()];
     int i = 0;
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getFileBlockLocations list of locations ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getFileBlockLocations list of locations ");      // TODO TODO log
     for (URI location : locations) {
-      LOG.info("CAMAMILLA SwiftNativeFileSystem.getFileBlockLocations list of locations ["+i+"] = "+location);      // TODO TODO log
+      LOG.info("VINAGRE SwiftNativeFileSystem.getFileBlockLocations list of locations ["+i+"] = "+location);      // TODO TODO log
       hosts[i] = location.getHost();
       names[i] = location.getAuthority();
       i++;
@@ -332,7 +333,7 @@ public class SwiftNativeFileSystem extends FileSystem {
   public BlockLocation[] getFileBlockLocations(FileStatus file,
                                                long start,
                                                long len) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getFileBlockLocations ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getFileBlockLocations ");      // TODO TODO log
 
     //argument checks
     if (file == null) {
@@ -415,7 +416,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public boolean mkdirs(Path path, FsPermission permission) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.mkdirs "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.mkdirs "+path);      // TODO TODO log
     if (LOG.isDebugEnabled()) {
       LOG.debug("SwiftFileSystem.mkdirs: " + path);
     }
@@ -460,7 +461,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @throws IOException if specified path is file instead of directory
    */
   private boolean mkdir(Path path) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.mkdir "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.mkdir "+path);      // TODO TODO log
     Path directory = makeAbsolute(path);
     boolean shouldCreate = shouldCreate(directory);
     if (shouldCreate) {
@@ -481,7 +482,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @throws ParentNotDirectoryException if the path references a file
    */
   private boolean shouldCreate(Path directory) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.shouldCreate "+directory);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.shouldCreate "+directory);      // TODO TODO log
     FileStatus fileStatus;
     boolean shouldCreate;
     if (isRoot(directory)) {
@@ -519,7 +520,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @throws IOException IO problems
    */
   private void forceMkdir(Path absolutePath) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.forceMkdir "+absolutePath);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.forceMkdir "+absolutePath);      // TODO TODO log
     if (LOG.isDebugEnabled()) {
       LOG.debug("Making dir '" + absolutePath + "' in Swift");
     }
@@ -537,7 +538,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public FileStatus[] listStatus(Path path) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.listStatus "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.listStatus "+path);      // TODO TODO log
     if (LOG.isDebugEnabled()) {
       LOG.debug("SwiftFileSystem.listStatus for: " + path);
     }
@@ -564,7 +565,7 @@ public class SwiftNativeFileSystem extends FileSystem {
                                    short replication, long blockSize,
                                    Progressable progress)
           throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.create "+file);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.create "+file+" bufferSize="+bufferSize+" replication="+replication+" blockSize="+blockSize);      // TODO TODO log
 
     LOG.debug("SwiftFileSystem.create "+file);
 
@@ -624,7 +625,7 @@ public class SwiftNativeFileSystem extends FileSystem {
   protected SwiftNativeOutputStream createSwiftOutputStream(Path path) throws
                                                                        IOException {
     long partSizeKB = getStore().getPartsizeKB();
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.createSwiftOutputStream "+path+" partSizeKB="+partSizeKB);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.createSwiftOutputStream "+path+" partSizeKB="+partSizeKB);      // TODO TODO log
 
     return new SwiftNativeOutputStream(getConf(),
             getStore(),
@@ -643,7 +644,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public FSDataInputStream open(Path path, int bufferSize) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.open 1 "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.open 1 "+path);      // TODO TODO log
     int bufferSizeKB = getStore().getBufferSizeKB();
     long readBlockSize = bufferSizeKB * 1024L;
     return open(path, bufferSize, readBlockSize);
@@ -661,7 +662,7 @@ public class SwiftNativeFileSystem extends FileSystem {
   public FSDataInputStream open(Path path,
                                 int bufferSize,
                                 long readBlockSize) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.open 2 "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.open 2 "+path);      // TODO TODO log
     if (readBlockSize <= 0) {
       throw new SwiftConfigurationException("Bad remote buffer size");
     }
@@ -686,7 +687,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public boolean rename(Path src, Path dst) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.rename "+src);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.rename "+src);      // TODO TODO log
     try {
       store.rename(makeAbsolute(src), makeAbsolute(dst));
       //success
@@ -717,7 +718,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public boolean delete(Path path, boolean recursive) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.delete "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.delete "+path);      // TODO TODO log
     try {
       return store.delete(path, recursive);
     } catch (FileNotFoundException e) {
@@ -733,7 +734,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @Override
   public boolean delete(Path f) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.delete "+f);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.delete "+f);      // TODO TODO log
     return delete(f, true);
   }
 
@@ -744,7 +745,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @return absolute path
    */
   protected Path makeAbsolute(Path path) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.makeAbsolute "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.makeAbsolute "+path);      // TODO TODO log
     if (path.isAbsolute()) {
       return path;
     }
@@ -756,7 +757,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    * @return a snapshot of the statistics
    */
   public List<DurationStats> getOperationStatistics() {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getOperationStatistics ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getOperationStatistics ");      // TODO TODO log
     return store.getOperationStatistics();
   }
 
@@ -771,7 +772,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @InterfaceAudience.Private
   public FileStatus[] listRawFileStatus(Path path, boolean newest) throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.listRawFileStatus "+path);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.listRawFileStatus "+path);      // TODO TODO log
     return store.listSubPaths(makeAbsolute(path), true, newest);
   }
 
@@ -783,7 +784,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @InterfaceAudience.Private
   public static int getPartitionsWritten(FSDataOutputStream outputStream) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getPartitionsWritten ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getPartitionsWritten ");      // TODO TODO log
     SwiftNativeOutputStream snos = getSwiftNativeOutputStream(outputStream);
     return snos.getPartitionsWritten();
   }
@@ -816,7 +817,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @InterfaceAudience.Private
   public static long getBytesWritten(FSDataOutputStream outputStream) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getBytesWritten ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getBytesWritten ");      // TODO TODO log
     SwiftNativeOutputStream snos = getSwiftNativeOutputStream(outputStream);
     return snos.getBytesWritten();
   }
@@ -831,7 +832,7 @@ public class SwiftNativeFileSystem extends FileSystem {
    */
   @InterfaceAudience.Private
   public static long getBytesUploaded(FSDataOutputStream outputStream) {
-    LOG.info("CAMAMILLA SwiftNativeFileSystem.getBytesUploaded ");      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystem.getBytesUploaded ");      // TODO TODO log
     SwiftNativeOutputStream snos = getSwiftNativeOutputStream(outputStream);
     return snos.getBytesUploaded();
   }

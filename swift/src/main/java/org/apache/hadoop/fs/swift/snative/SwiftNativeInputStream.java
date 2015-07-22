@@ -103,6 +103,7 @@ class SwiftNativeInputStream extends FSInputStream {
     //initial buffer fill
     this.httpStream = storeNative.getObject(path).getInputStream();
     //fillBuffer(0);
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.constructor - - - - -");       // TODO TODO log
   }
 
   /**
@@ -114,6 +115,7 @@ class SwiftNativeInputStream extends FSInputStream {
     pos += offset;
     rangeOffset += offset;
     SwiftUtils.trace(LOG, "Inc: pos=%d bufferOffset=%d", pos, rangeOffset);
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.incPos offset="+offset+" pos="+pos+" rangeOffset="+rangeOffset+" - -");       // TODO TODO log
   }
 
   /**
@@ -132,6 +134,7 @@ class SwiftNativeInputStream extends FSInputStream {
                      pos,
                      rangeOffset,
                      contentLength);
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.updateStartOfBufferPosition seekPos="+seekPos+" contentLength="+contentLength+" pos="+pos+" this.contentLength="+this.contentLength+" -");       // TODO TODO log
   }
 
   @Override
@@ -154,6 +157,8 @@ class SwiftNativeInputStream extends FSInputStream {
     if (statistics != null && result != -1) {
       statistics.incrementBytesRead(1);
     }
+
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.read "+result+" - - - -");       // TODO TODO log
     return result;
   }
 
@@ -181,6 +186,7 @@ class SwiftNativeInputStream extends FSInputStream {
       }
     }
 
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.read off="+off+" len="+len+" read="+result+" - -");       // TODO TODO log
     return result;
   }
 
@@ -190,6 +196,7 @@ class SwiftNativeInputStream extends FSInputStream {
    * @throws IOException if not
    */
   private boolean reopenBuffer() throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.reopenBuffer - - - - -");       // TODO TODO log
     innerClose("reopening buffer to trigger refresh");
     boolean success = false;
     try {
@@ -211,10 +218,12 @@ class SwiftNativeInputStream extends FSInputStream {
    */
   @Override
   public synchronized void close() throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.close - - - - -");       // TODO TODO log
     innerClose("closed");
   }
 
   private void innerClose(String reason) throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.innerClose reason="+reason+" - - - -");       // TODO TODO log
     try {
       if (httpStream != null) {
         reasonClosed = reason;
@@ -233,6 +242,7 @@ class SwiftNativeInputStream extends FSInputStream {
    * @throws SwiftConnectionClosedException
    */
   private void verifyOpen() throws SwiftConnectionClosedException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.verifyOpen - - - - -");       // TODO TODO log
     if (httpStream == null) {
       LOG.info("CAMAMILLA SwiftNativeInputStream.verifyOpen ERROR");       // TODO TODO log
       throw new SwiftConnectionClosedException(reasonClosed);
@@ -256,6 +266,7 @@ class SwiftNativeInputStream extends FSInputStream {
    */
   @Override
   protected void finalize() throws Throwable {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.finalize - - - - -");       // TODO TODO log
     if (httpStream != null) {
       LOG.error(
         "Input stream is leaking handles by not being closed() properly: "
@@ -277,6 +288,7 @@ class SwiftNativeInputStream extends FSInputStream {
    * @throws SwiftException if a read returned -1.
    */
   private int chompBytes(long bytes) throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.chompBytes bytes="+bytes+" - - - -");       // TODO TODO log
     int count = 0;
     if (httpStream != null) {
       int result;
@@ -299,6 +311,7 @@ class SwiftNativeInputStream extends FSInputStream {
    */
   @Override
   public synchronized void seek(long targetPos) throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.seek targetPos="+targetPos+" - - - -");       // TODO TODO log
     if (targetPos < 0) {
       throw new EOFException(
           FSExceptionMessages.NEGATIVE_SEEK);
@@ -355,6 +368,7 @@ class SwiftNativeInputStream extends FSInputStream {
    * @throws IOException IO problems on the read
    */
   private void fillBuffer(long targetPos) throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.fillBuffer targetPos="+targetPos+" - - - -");       // TODO TODO log
     long length = targetPos + bufferSize;
     SwiftUtils.debug(LOG, "Fetching %d bytes starting at %d", length, targetPos);
     HttpBodyContent blob = nativeStore.getObject(path, targetPos, length);
@@ -377,6 +391,7 @@ class SwiftNativeInputStream extends FSInputStream {
    */
   @Override
   public boolean seekToNewSource(long targetPos) throws IOException {
+    LOG.info("ESTEVIAIN "+System.identityHashCode(this)+" SwiftNativeInputStream.seekToNewSource targetPos="+targetPos+" false - - -");       // TODO TODO log
     return false;
   }
 }

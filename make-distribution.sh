@@ -251,6 +251,9 @@ fi
 cp "$SPARK_HOME/swift/target/hadoop-openstack-2.6.0.jar" "$DISTDIR/lib"
 cp "$SPARK_HOME"/../conf/* "$DISTDIR"/conf
 
+# Copy Iostack tasks
+cp ${SPARK_HOME}/custom-jobs/spark-*/target/*.jar ${DISTDIR}/lib
+
 # Download and copy in tachyon, if requested
 if [ "$SPARK_TACHYON" == "true" ]; then
   TMPD=`mktemp -d 2>/dev/null || mktemp -d -t 'disttmp'`

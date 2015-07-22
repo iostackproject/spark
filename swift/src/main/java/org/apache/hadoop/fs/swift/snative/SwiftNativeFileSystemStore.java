@@ -69,7 +69,7 @@ public class SwiftNativeFileSystemStore {
    */
   public void initialize(URI fsURI, Configuration configuration) throws IOException {
     this.uri = fsURI;
-    LOG.info("CAMAMILLA SwiftNativeFileSystemStore.initialize uri = "+fsURI);      // TODO TODO log
+    LOG.info("VINAGRE CAMAMILLA SwiftNativeFileSystemStore.initialize uri = "+fsURI);      // TODO TODO log
     this.swiftRestClient = SwiftRestClient.getInstance(fsURI, configuration);
   }
 
@@ -278,7 +278,7 @@ public class SwiftNativeFileSystemStore {
    */
   public HttpBodyContent getObject(Path path) throws IOException {
     SwiftObjectPath objPath = toObjectPath(path);
-    LOG.info("CAMAMILLA SwiftNativeFileSystemStore.getObject path = " + path+ " with objectPath = "+objPath);      // TODO TODO log
+    LOG.info("VINAGRE SwiftNativeFileSystemStore.getObject path = " + path+ " with objectPath = "+objPath);      // TODO TODO log
     return swiftRestClient.getData(objPath,
                                    SwiftRestClient.NEWEST);
   }
@@ -294,7 +294,7 @@ public class SwiftNativeFileSystemStore {
    */
   public HttpBodyContent getObject(Path path, long byteRangeStart, long length)
           throws IOException {
-    LOG.info("CAMAMILLA SwiftNativeFileSystemStore.getObject path = "+path+" start="+byteRangeStart+" length="+length);      // TODO TODO log
+    LOG.info("CAMAMILLA SwiftNativeFileSystemStore.getObject path="+path+" start="+byteRangeStart+" length="+length);      // TODO TODO log
     return swiftRestClient.getData(
       toObjectPath(path), byteRangeStart, length);
   }

@@ -110,6 +110,7 @@
     <module>external/kafka</module>
     <module>external/kafka-assembly</module>
     <module>swift</module>
+    <module>custom-jobs</module>
   </modules>
 
   <properties>

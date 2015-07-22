@@ -165,7 +165,9 @@ class WriteAheadLogBackedBlockRDD[T: ClassTag](
     }
 
     if (partition.isBlockIdValid) {
-      getBlockFromBlockManager().getOrElse { getBlockFromWriteAheadLog() }
+      getBlockFromBlockManager().getOrElse {
+        getBlockFromWriteAheadLog()
+      }
     } else {
       getBlockFromWriteAheadLog()
     }
@@ -199,5 +201,7 @@ class WriteAheadLogBackedBlockRDD[T: ClassTag](
           Seq.empty
       }
     }
+    logInfo("VINAGRE WriteAheadLogBackedBlockRDDPartition.getPreferredLocations split = " + partition + " blockLocations = " + blockLocations.get) // TODO TODO log
+    blockLocations.get
   }
 }

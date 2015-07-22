@@ -569,10 +569,12 @@ private[parquet] class FilteringParquetRowInputFormat
           var blockLocations: Array[BlockLocation] = null
           if (!cacheMetadata) {
             blockLocations = fs.getFileBlockLocations(status, 0, status.getLen)
+            logInfo("ENTRECOT ParquetTableOperations.getClientSideSplits no cacheMetadata status = " +status+" blockLocations = "+blockLocations)      // TODO TODO log
           } else {
             blockLocations = blockLocationCache.get(status, new Callable[Array[BlockLocation]] {
               def call(): Array[BlockLocation] = fs.getFileBlockLocations(status, 0, status.getLen)
             })
+            logInfo("ENTRECOT ParquetTableOperations.getClientSideSplits si cacheMetadata status = " +status+" blockLocations = "+blockLocations)      // TODO TODO log
           }
           splits.addAll(
             generateSplits.invoke(
@@ -623,6 +625,7 @@ private[parquet] class FilteringParquetRowInputFormat
       val fs = file.getFileSystem(configuration)
       val status = fileStatuses.getOrElse(file, fs.getFileStatus(file))
       val blockLocations = fs.getFileBlockLocations(status, 0, status.getLen)
+      logInfo("ENTRECOT ParquetTableOperations.getTaskSideSplits status = " +status+" blockLocations = "+blockLocations)      // TODO TODO log
       splits.addAll(
         generateSplits.invoke(
          null,

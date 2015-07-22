@@ -575,6 +575,7 @@ public final class SwiftRestClient {
               + " property was incorrect: "
               + stringAuthUri, e);
     }
+    LOG.info("ESTEVIA "+System.identityHashCode(this)+" SwiftRestClient.constructor "+serviceDescription);        // TODO TODO log
   }
 
   /**
@@ -628,7 +629,7 @@ public final class SwiftRestClient {
     if (LOG.isDebugEnabled()) {
       LOG.debug("getData:" + range);
     }
-    LOG.info("CAMAMILLA SwiftRestClient.getData B path = " + path+" offset="+offset+" length="+length+" range={"+range+"}");      // TODO TODO log
+    LOG.info("VINAGRE SwiftRestClient.getData B path = " + path+" offset="+offset+" length="+length+" range={"+range+"}");      // TODO TODO log
     return getData(path,
                    new Header(HEADER_RANGE, range),
                    SwiftRestClient.NEWEST);
@@ -1590,7 +1591,7 @@ public final class SwiftRestClient {
    * @throws IOException
    */
   private HttpBodyContent doGet(final URI uri, final Header... requestHeaders) throws IOException {
-    LOG.info("CAMAMILLA SwiftRestClient.doGet uri = " + uri + " amb headers = {" + headersToString(requestHeaders) + "}");      // TODO TODO log
+    LOG.info("ESTEVIAIN SwiftRestClient.doGet uri = " + uri + " amb headers = {" + headersToString(requestHeaders) + "}");      // TODO TODO log
 
     return perform("", uri, new GetMethodProcessor<HttpBodyContent>() {
       @Override

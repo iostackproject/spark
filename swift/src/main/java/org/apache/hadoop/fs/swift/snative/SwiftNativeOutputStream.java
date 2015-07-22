@@ -84,10 +84,10 @@ class SwiftNativeOutputStream extends OutputStream {
     this.partNumber = 1;
     this.blockOffset = 0;
     this.filePartSize = 1024L * partSizeKB;
-    this.useStorlets = conf.getBoolean("iostack.clientSideStorlet",false);
+    this.useStorlets = conf.getBoolean("iostack.clientSideStorlet", false);
     this.column = conf.getInt("iostack.sqlcolumn", 0);
     this.storletType = conf.get("iostack.storlet.type", "words");
-    LOG.info("CAMAMILLA SWIFT SwiftNativeOutputStream useStorlets="+useStorlets+ " column="+column);        // TODO TODO log
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.constructor useStorlets="+useStorlets+" column="+column+" - - -");        // TODO TODO log
   }
 
   private File newBackupFile() throws IOException {
@@ -107,6 +107,7 @@ class SwiftNativeOutputStream extends OutputStream {
    */
   @Override
   public void flush() throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.flush - - - - -");        // TODO TODO log
     backupStream.flush();
   }
 
@@ -116,6 +117,7 @@ class SwiftNativeOutputStream extends OutputStream {
    * @throws SwiftException if it is not
    */
   private synchronized void verifyOpen() throws SwiftException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.verifyOpen - - - - -");        // TODO TODO log
     if (closed) {
       LOG.info("CAMAMILLA SwiftNativeOutputStream ERROR");       // TODO TODO log
       throw new SwiftConnectionClosedException();
@@ -129,6 +131,7 @@ class SwiftNativeOutputStream extends OutputStream {
    */
   @Override
   public synchronized void close() throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.close - - - - -");        // TODO TODO log
     if (closed) {
       return;
     }
@@ -159,6 +162,7 @@ class SwiftNativeOutputStream extends OutputStream {
    * @throws IOException IO Problems
    */
   private void uploadOnClose(Path keypath) throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.uploadOnClose path="+keypath+" - - - -");        // TODO TODO log
     boolean uploadSuccess = false;
     int attempt = 0;
     while (!uploadSuccess) {
@@ -177,6 +181,7 @@ class SwiftNativeOutputStream extends OutputStream {
 
   @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
   private long uploadFileAttempt(Path keypath, int attempt) throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.uploadFileAttempt path="+keypath+" attempt="+attempt+" - - -");        // TODO TODO log
     long uploadLen = backupFile.length();
     SwiftUtils.debug(LOG, "Closing write of file %s;" +
                           " localfile=%s of length %d - attempt %d",
@@ -194,7 +199,7 @@ class SwiftNativeOutputStream extends OutputStream {
         uploadLen = invokeWords(new FileInputStream(backupFile), auxStreamStream, column);
       }
 
-      LOG.info("CAMAMILLA SWIFT SwiftNativeOutputStream.uploadFileAttempt length Storlet = "+uploadLen+" auxFile length = "+auxFile.length());        // TODO TODO log
+      LOG.info("CAMAMILLA SWIFT SwiftNativeOutputStream.uploadFileAttempt length="+uploadLen+" auxFilelength="+auxFile.length());        // TODO TODO log
       nativeStore.uploadFile(keypath,
         new FileInputStream(auxFile),
         uploadLen);
@@ -301,10 +306,9 @@ class SwiftNativeOutputStream extends OutputStream {
   //////////////////////////////////////////////////// STORLET CLIENT SIDE /////////////////////////////////////////////
 
 
-
-
   @Override
   protected void finalize() throws Throwable {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.finalize - - - - -");        // TODO TODO log
     if(!closed) {
       LOG.warn("stream not closed");
     }
@@ -324,6 +328,7 @@ class SwiftNativeOutputStream extends OutputStream {
 
   @Override
   public void write(int b) throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.write bytes="+b+" - - - -");        // TODO TODO log
     //insert to a one byte array
     oneByte[0] = (byte) b;
     //then delegate to the array writing routine
@@ -333,6 +338,7 @@ class SwiftNativeOutputStream extends OutputStream {
   @Override
   public synchronized void write(byte[] buffer, int offset, int len) throws
                                                                      IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.write offset="+offset+" len="+len+" - - -");        // TODO TODO log
     //validate args
     if (offset < 0 || len < 0 || (offset + len) > buffer.length) {
       throw new IndexOutOfBoundsException("Invalid offset/length for write");
@@ -400,6 +406,7 @@ class SwiftNativeOutputStream extends OutputStream {
    */
   @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
   private void partUpload(boolean closingUpload) throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.partUpload closingUpload="+closingUpload+" - - - -");        // TODO TODO log
     if (backupStream != null) {
       backupStream.close();
     }
@@ -441,6 +448,7 @@ class SwiftNativeOutputStream extends OutputStream {
 
   @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
   private long uploadFilePartAttempt(int attempt) throws IOException {
+    LOG.info("ESTEVIAOUT "+System.identityHashCode(this)+" SwiftNativeOutputStream.uploadFilePartAttempt attempt"+attempt+" - - - -");        // TODO TODO log
     long uploadLen = backupFile.length();
     SwiftUtils.debug(LOG, "Uploading part %d of file %s;" +
                           " localfile=%s of length %d  - attempt %d",

@@ -1,13 +1,13 @@
-package org.apache.spark.examples
+package iostack.spark.tasks
+
 
 import java.io.{BufferedWriter, FileWriter}
 import java.lang.System.{currentTimeMillis => _time}
 
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
 
-object SparkDFSIO {
+object SparkTestDFSIO {
 
   // Method to profile a code block
   def profile[R](code: => R, t: Long = _time) = (code, _time - t)
@@ -15,8 +15,8 @@ object SparkDFSIO {
   def main(args: Array[String]) {
     // TODO: Need to display usage information, and explain arguments
     // Create a new Context
-    val sparkConf = new SparkConf().setAppName("SparkDFSIO")
-    val sc = new SparkContext(sparkConf)
+    val sc = new SparkContext(new SparkConf().setAppName("Spark DFSIO").set("spark.hadoop.dfs.replication", "1"))
+
     // Read or write mode
     val mode = args(0)
 
@@ -40,7 +40,7 @@ object SparkDFSIO {
       // Create a Range and parallelize it, on nFiles partitions
       // The idea is to have a small RDD partitioned on a given number of workers
       // then each worker will generate data to write
-    	val a = sc.parallelize(1 until nFiles+1, nFiles)
+      val a = sc.parallelize(1 until nFiles+1, nFiles)
 
       val b = a.map( i => {
         // generate an array of Byte (8 bit), with dimension fSize
@@ -66,22 +66,22 @@ object SparkDFSIO {
     //////////////////////////////////////////////////////////////////////
     // Read mode
     //////////////////////////////////////////////////////////////////////
-	if (mode == "read") {
-    	// Load file(s)
-    	val b = sc.textFile(ioFile,nFiles)
-    	val (c, timeR) = profile {b.map(x => "0").take(1)}
-    	// BE CAREFUL! This is wrong: Spark is smart enough to read only one partition from which it gets the first element, so the read time is bogus
-    	// FIX ME :(
+    if (mode == "read") {
+      // Load file(s)
+      val b = sc.textFile(ioFile,nFiles)
+      val (c, timeR) = profile {b.map(x => "0").take(1)}
+      // BE CAREFUL! This is wrong: Spark is smart enough to read only one partition from which it gets the first element, so the read time is bogus
+      // FIX ME :(
 
-    	// Write stats
-    	statFile.write("\nTotal volume      : " + (nFiles * fSize.toLong) + " Bytes")
-    	statFile.write("\nTotal read time   : " + (timeR/1000.toFloat) + " s")
+      // Write stats
+      statFile.write("\nTotal volume      : " + (nFiles * fSize.toLong) + " Bytes")
+      statFile.write("\nTotal read time   : " + (timeR/1000.toFloat) + " s")
       statFile.write("\nAggregate Throughput : " + (nFiles * fSize.toLong)/(timeR/1000.toFloat) + " Bytes per second")
-    	statFile.write("\n")
-	}
+      statFile.write("\n")
+    }
 
-   	// Close open stat file
-   	statFile.close()
+    // Close open stat file
+    statFile.close()
 
     sc.stop()
   }
