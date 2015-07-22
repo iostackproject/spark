@@ -51,6 +51,7 @@ then
 	        * ) echo "Please answer yes or no.";;
 	    esac
 	done
+	./make-distribution.sh --name spark-swift --tgz -Phadoop-2.6
 fi
 
 while getopts ':hm:' option; do

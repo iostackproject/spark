@@ -98,7 +98,7 @@ object DFSReadWriteTest {
 
     println("Readign local file")
     val fileContents = readFile(localFilePath.toString())
-    println("Performing local word count")
+    println("Performing local word count_2")
     val localWordCount = runLocalWordCount(fileContents)
 
     println("Creating SparkConf")

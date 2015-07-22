@@ -5,7 +5,6 @@ import java.lang.System.{currentTimeMillis => _time}
 
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
 
 object SparkDFSIO {
 
@@ -15,8 +14,8 @@ object SparkDFSIO {
   def main(args: Array[String]) {
     // TODO: Need to display usage information, and explain arguments
     // Create a new Context
-    val sparkConf = new SparkConf().setAppName("SparkDFSIO")
-    val sc = new SparkContext(sparkConf)
+    val sc = new SparkContext(new SparkConf().setAppName("Spark DFSIO").set("spark.hadoop.dfs.replication", "1"))
+
     // Read or write mode
     val mode = args(0)
 
